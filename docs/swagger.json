@@ -1,0 +1,703 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/health/": {
+            "get": {
+                "description": "检查服务是否正常运行",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "健康检查"
+                ],
+                "summary": "健康检查",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/add": {
+            "post": {
+                "description": "管理员创建用户接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "创建用户",
+                "parameters": [
+                    {
+                        "description": "用户创建请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_model_dto_user.UserAddRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/delete": {
+            "post": {
+                "description": "管理员删除用户接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "description": "删除请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/common.DeleteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/get": {
+            "get": {
+                "description": "管理员根据ID获取用户详细信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "根据ID获取用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_entity_User"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/get/login": {
+            "get": {
+                "description": "获取当前登录用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "获取当前登录用户",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/get/vo": {
+            "get": {
+                "description": "根据ID获取脱敏后的用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "根据ID获取用户VO",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_vo_UserVO"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/list/page/vo": {
+            "post": {
+                "description": "管理员分页查询用户列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "分页获取用户列表",
+                "parameters": [
+                    {
+                        "description": "用户查询请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_model_dto_user.UserQueryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-common_MapResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "用户登录接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "用户登录请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_model_dto_user.UserLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "description": "用户注销登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "用户注销",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-bool"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "description": "用户注册接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "用户注册",
+                "parameters": [
+                    {
+                        "description": "用户注册请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_model_dto_user.UserRegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/update": {
+            "post": {
+                "description": "管理员更新用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "更新用户",
+                "parameters": [
+                    {
+                        "description": "用户更新请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_model_dto_user.UserUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_common.BaseResponse-bool"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "aicode_common.BaseResponse-aicode_model_entity_User": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/aicode_model_entity.User"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_common.BaseResponse-aicode_model_vo_LoginUserVO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/aicode_model_vo.LoginUserVO"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_common.BaseResponse-aicode_model_vo_UserVO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/aicode_model_vo.UserVO"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_common.BaseResponse-bool": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_common.BaseResponse-common_MapResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/common.MapResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_common.BaseResponse-int64": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_common.BaseResponse-string": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_dto_user.UserAddRequest": {
+            "type": "object",
+            "required": [
+                "userAccount"
+            ],
+            "properties": {
+                "userAccount": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "userAvatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "userProfile": {
+                    "description": "用户简介",
+                    "type": "string"
+                },
+                "userRole": {
+                    "description": "用户角色: user, admin",
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_dto_user.UserLoginRequest": {
+            "type": "object",
+            "required": [
+                "userAccount",
+                "userPassword"
+            ],
+            "properties": {
+                "userAccount": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "userPassword": {
+                    "description": "密码",
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_dto_user.UserQueryRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "pageNum": {
+                    "description": "当前页号",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "页面大小",
+                    "type": "integer"
+                },
+                "sortField": {
+                    "description": "排序字段",
+                    "type": "string"
+                },
+                "sortOrder": {
+                    "description": "排序顺序（默认降序）",
+                    "type": "string"
+                },
+                "userAccount": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "userProfile": {
+                    "description": "简介",
+                    "type": "string"
+                },
+                "userRole": {
+                    "description": "用户角色：user/admin/ban",
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_dto_user.UserRegisterRequest": {
+            "type": "object",
+            "required": [
+                "checkPassword",
+                "userAccount",
+                "userPassword"
+            ],
+            "properties": {
+                "checkPassword": {
+                    "description": "确认密码",
+                    "type": "string"
+                },
+                "userAccount": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "userPassword": {
+                    "description": "密码",
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_dto_user.UserUpdateRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "userAvatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "userProfile": {
+                    "description": "简介",
+                    "type": "string"
+                },
+                "userRole": {
+                    "description": "用户角色：user/admin",
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_entity.User": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "string"
+                },
+                "editTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isDelete": {
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "type": "string"
+                },
+                "userAccount": {
+                    "type": "string"
+                },
+                "userAvatar": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "userPassword": {
+                    "type": "string"
+                },
+                "userProfile": {
+                    "type": "string"
+                },
+                "userRole": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_vo.LoginUserVO": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "用户 id",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "userAccount": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "userAvatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "userProfile": {
+                    "description": "用户简介",
+                    "type": "string"
+                },
+                "userRole": {
+                    "description": "用户角色：user/admin",
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_model_vo.UserVO": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "userAccount": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "userAvatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "userProfile": {
+                    "description": "用户简介",
+                    "type": "string"
+                },
+                "userRole": {
+                    "description": "用户角色：user/admin",
+                    "type": "string"
+                }
+            }
+        },
+        "common.DeleteRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "common.MapResponse": {
+            "type": "object"
+        }
+    }
+}

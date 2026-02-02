@@ -1,0 +1,470 @@
+definitions:
+  aicode_common.BaseResponse-aicode_model_entity_User:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/aicode_model_entity.User'
+      message:
+        type: string
+    type: object
+  aicode_common.BaseResponse-aicode_model_vo_LoginUserVO:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/aicode_model_vo.LoginUserVO'
+      message:
+        type: string
+    type: object
+  aicode_common.BaseResponse-aicode_model_vo_UserVO:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/aicode_model_vo.UserVO'
+      message:
+        type: string
+    type: object
+  aicode_common.BaseResponse-bool:
+    properties:
+      code:
+        type: integer
+      data:
+        type: boolean
+      message:
+        type: string
+    type: object
+  aicode_common.BaseResponse-common_MapResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/common.MapResponse'
+      message:
+        type: string
+    type: object
+  aicode_common.BaseResponse-int64:
+    properties:
+      code:
+        type: integer
+      data:
+        type: integer
+      message:
+        type: string
+    type: object
+  aicode_common.BaseResponse-string:
+    properties:
+      code:
+        type: integer
+      data:
+        type: string
+      message:
+        type: string
+    type: object
+  aicode_model_dto_user.UserAddRequest:
+    properties:
+      userAccount:
+        description: 账号
+        type: string
+      userAvatar:
+        description: 用户头像
+        type: string
+      userName:
+        description: 用户昵称
+        type: string
+      userProfile:
+        description: 用户简介
+        type: string
+      userRole:
+        description: '用户角色: user, admin'
+        type: string
+    required:
+    - userAccount
+    type: object
+  aicode_model_dto_user.UserLoginRequest:
+    properties:
+      userAccount:
+        description: 账号
+        type: string
+      userPassword:
+        description: 密码
+        type: string
+    required:
+    - userAccount
+    - userPassword
+    type: object
+  aicode_model_dto_user.UserQueryRequest:
+    properties:
+      id:
+        description: id
+        type: integer
+      pageNum:
+        description: 当前页号
+        type: integer
+      pageSize:
+        description: 页面大小
+        type: integer
+      sortField:
+        description: 排序字段
+        type: string
+      sortOrder:
+        description: 排序顺序（默认降序）
+        type: string
+      userAccount:
+        description: 账号
+        type: string
+      userName:
+        description: 用户昵称
+        type: string
+      userProfile:
+        description: 简介
+        type: string
+      userRole:
+        description: 用户角色：user/admin/ban
+        type: string
+    type: object
+  aicode_model_dto_user.UserRegisterRequest:
+    properties:
+      checkPassword:
+        description: 确认密码
+        type: string
+      userAccount:
+        description: 账号
+        type: string
+      userPassword:
+        description: 密码
+        type: string
+    required:
+    - checkPassword
+    - userAccount
+    - userPassword
+    type: object
+  aicode_model_dto_user.UserUpdateRequest:
+    properties:
+      id:
+        description: id
+        type: integer
+      userAvatar:
+        description: 用户头像
+        type: string
+      userName:
+        description: 用户昵称
+        type: string
+      userProfile:
+        description: 简介
+        type: string
+      userRole:
+        description: 用户角色：user/admin
+        type: string
+    required:
+    - id
+    type: object
+  aicode_model_entity.User:
+    properties:
+      createTime:
+        type: string
+      editTime:
+        type: string
+      id:
+        type: integer
+      isDelete:
+        type: integer
+      updateTime:
+        type: string
+      userAccount:
+        type: string
+      userAvatar:
+        type: string
+      userName:
+        type: string
+      userPassword:
+        type: string
+      userProfile:
+        type: string
+      userRole:
+        type: string
+    type: object
+  aicode_model_vo.LoginUserVO:
+    properties:
+      createTime:
+        description: 创建时间
+        type: string
+      id:
+        description: 用户 id
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      userAccount:
+        description: 账号
+        type: string
+      userAvatar:
+        description: 用户头像
+        type: string
+      userName:
+        description: 用户昵称
+        type: string
+      userProfile:
+        description: 用户简介
+        type: string
+      userRole:
+        description: 用户角色：user/admin
+        type: string
+    type: object
+  aicode_model_vo.UserVO:
+    properties:
+      createTime:
+        description: 创建时间
+        type: string
+      id:
+        description: id
+        type: integer
+      userAccount:
+        description: 账号
+        type: string
+      userAvatar:
+        description: 用户头像
+        type: string
+      userName:
+        description: 用户昵称
+        type: string
+      userProfile:
+        description: 用户简介
+        type: string
+      userRole:
+        description: 用户角色：user/admin
+        type: string
+    type: object
+  common.DeleteRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  common.MapResponse:
+    type: object
+info:
+  contact: {}
+paths:
+  /health/:
+    get:
+      consumes:
+      - application/json
+      description: 检查服务是否正常运行
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-string'
+      summary: 健康检查
+      tags:
+      - 健康检查
+  /user/add:
+    post:
+      consumes:
+      - application/json
+      description: 管理员创建用户接口
+      parameters:
+      - description: 用户创建请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_model_dto_user.UserAddRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-int64'
+      summary: 创建用户
+      tags:
+      - 用户模块
+  /user/delete:
+    post:
+      consumes:
+      - application/json
+      description: 管理员删除用户接口
+      parameters:
+      - description: 删除请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/common.DeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-bool'
+      summary: 删除用户
+      tags:
+      - 用户模块
+  /user/get:
+    get:
+      consumes:
+      - application/json
+      description: 管理员根据ID获取用户详细信息
+      parameters:
+      - description: 用户ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_entity_User'
+      summary: 根据ID获取用户
+      tags:
+      - 用户模块
+  /user/get/login:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前登录用户信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO'
+      summary: 获取当前登录用户
+      tags:
+      - 用户模块
+  /user/get/vo:
+    get:
+      consumes:
+      - application/json
+      description: 根据ID获取脱敏后的用户信息
+      parameters:
+      - description: 用户ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_vo_UserVO'
+      summary: 根据ID获取用户VO
+      tags:
+      - 用户模块
+  /user/list/page/vo:
+    post:
+      consumes:
+      - application/json
+      description: 管理员分页查询用户列表
+      parameters:
+      - description: 用户查询请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_model_dto_user.UserQueryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-common_MapResponse'
+      summary: 分页获取用户列表
+      tags:
+      - 用户模块
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录接口
+      parameters:
+      - description: 用户登录请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_model_dto_user.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO'
+      summary: 用户登录
+      tags:
+      - 用户模块
+  /user/logout:
+    post:
+      consumes:
+      - application/json
+      description: 用户注销登录
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-bool'
+      summary: 用户注销
+      tags:
+      - 用户模块
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册接口
+      parameters:
+      - description: 用户注册请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_model_dto_user.UserRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-int64'
+      summary: 用户注册
+      tags:
+      - 用户模块
+  /user/update:
+    post:
+      consumes:
+      - application/json
+      description: 管理员更新用户信息
+      parameters:
+      - description: 用户更新请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_model_dto_user.UserUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_common.BaseResponse-bool'
+      summary: 更新用户
+      tags:
+      - 用户模块
+swagger: "2.0"

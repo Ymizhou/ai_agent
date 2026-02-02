@@ -1,0 +1,17 @@
+server:
+  port: 8123
+  context_path: /api/v1
+  log_level: debug
+
+app:
+  name: ai-code-mother
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: 123456aA
+  dbname: aicode
+  charset: utf8mb4
+  parseTime: true
+  loc: Local
