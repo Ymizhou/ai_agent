@@ -15,7 +15,12 @@ gen: wire swag
 	@echo "All code generation completed!"
 
 # 清理生成的文件
-clean:
+clean_windows:
+	@echo "Cleaning generated files..."
+	@powershell -Command "if (Test-Path docs) { Remove-Item -Recurse -Force docs }"
+	@powershell -Command "if (Test-Path cmd/wire_gen.go) { Remove-Item -Force cmd/wire_gen.go }"
+
+clean_linux:
 	@echo "Cleaning generated files..."
 	rm -rf docs/
 	rm -f cmd/wire_gen.go
