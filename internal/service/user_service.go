@@ -1,9 +1,10 @@
 package service
 
 import (
-	"aicode/model/dto/user"
-	"aicode/model/entity"
-	"aicode/model/vo"
+	"aicode/internal/model/dto/user"
+	"aicode/internal/model/entity"
+	"aicode/internal/model/vo"
+
 	"github.com/gin-gonic/gin"
 )
 

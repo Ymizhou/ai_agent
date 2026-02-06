@@ -2,9 +2,9 @@ package router
 
 import (
 	"aicode/config"
-	"aicode/controller"
 	"aicode/docs"
-	"aicode/router/middleware"
+	"aicode/internal/controller"
+	"aicode/internal/router/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"aicode/config"
-
 	"gorm.io/gorm"
+
+	"aicode/config"
 )
 
 // ProvideConfig 提供配置

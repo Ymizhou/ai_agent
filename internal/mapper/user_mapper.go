@@ -1,8 +1,9 @@
 package mapper
 
 import (
-	"aicode/model/entity"
 	"gorm.io/gorm"
+
+	"aicode/internal/model/entity"
 )
 
 // UserMapper 用户数据访问层

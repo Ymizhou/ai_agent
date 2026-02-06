@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"aicode/common"
 	"net/http"
+
+	"aicode/internal/common"
 
 	"github.com/gin-gonic/gin"
 )

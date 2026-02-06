@@ -4,10 +4,10 @@
 package cmd
 
 import (
-	"aicode/controller"
-	"aicode/mapper"
-	"aicode/router"
-	"aicode/service/impl"
+	"aicode/internal/controller"
+	"aicode/internal/mapper"
+	"aicode/internal/router"
+	"aicode/internal/service/impl"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

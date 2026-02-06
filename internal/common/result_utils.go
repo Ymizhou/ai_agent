@@ -1,6 +1,6 @@
 package common
 
-import "aicode/exception"
+import "aicode/internal/exception"
 
 // Success 成功响应
 func Success[T any](data T) BaseResponse[T] {

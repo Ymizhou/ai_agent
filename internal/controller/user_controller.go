@@ -1,15 +1,16 @@
 package controller
 
 import (
-	"aicode/common"
-	"aicode/constant"
-	"aicode/exception"
-	"aicode/model/dto/user"
-	_ "aicode/model/entity"
-	_ "aicode/model/vo"
-	"aicode/service"
 	"net/http"
 	"strconv"
+
+	"aicode/constant"
+	"aicode/internal/common"
+	"aicode/internal/exception"
+	"aicode/internal/model/dto/user"
+	_ "aicode/internal/model/entity"
+	_ "aicode/internal/model/vo"
+	"aicode/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

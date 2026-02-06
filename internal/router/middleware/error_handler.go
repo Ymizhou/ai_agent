@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"aicode/common"
-	"aicode/exception"
 	"errors"
 	"fmt"
 	"net/http"
+
+	"aicode/internal/common"
+	"aicode/internal/exception"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
