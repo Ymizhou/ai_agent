@@ -13,20 +13,40 @@ var globalConfig *Config
 // Config 应用配置
 type Config struct {
 	Server   ServerConfig   `yaml:"server"`
-	App      AppConfig      `yaml:"app"`
 	Database DatabaseConfig `yaml:"database"`
+	AI       AIConfig       `yaml:"ai"`
+	File     FileConfig     `yaml:"file"`
+}
+
+// FileConfig 文件存储配置
+type FileConfig struct {
+	StoreBasePath string `yaml:"store_base_path"`
+}
+
+// AIConfig 人工智能配置
+type AIConfig struct {
+	DeepSeek        DeepSeekConfig        `yaml:"deepseek"`
+	SystemPromptDir SystemPromptDirConfig `yaml:"system_prompt_dir"`
+}
+
+// DeepSeekConfig 深度求索配置
+type DeepSeekConfig struct {
+	APIKey  string `yaml:"api_key"`
+	Model   string `yaml:"model"`
+	BaseURL string `yaml:"base_url"`
+}
+
+// SystemPromptDirConfig 系统提示词目录配置
+type SystemPromptDirConfig struct {
+	SingalGenerate string `yaml:"singal_generate"`
+	MultiGenerate  string `yaml:"multi_generate"`
 }
 
 // ServerConfig 服务器配置
 type ServerConfig struct {
-	Port        int    `yaml:"port"`
-	ContextPath string `yaml:"context_path"`
-	LogLevel    string `yaml:"log_level"`
-}
-
-// AppConfig 应用配置
-type AppConfig struct {
-	Name string `yaml:"name"`
+	Port     int    `yaml:"port"`
+	RootPath string `yaml:"root_path"`
+	LogLevel string `yaml:"log_level"`
 }
 
 // DatabaseConfig 数据库配置

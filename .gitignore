@@ -34,6 +34,7 @@ config.yml
 # Logs
 *.log
 logs/
+tmp/
 
 # Build output
 bin/

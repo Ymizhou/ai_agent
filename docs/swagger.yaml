@@ -1,32 +1,41 @@
 definitions:
-  aicode_common.BaseResponse-aicode_model_entity_User:
+  aicode_internal_common.BaseResponse-aicode_internal_common_MapResponse:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/aicode_model_entity.User'
+        $ref: '#/definitions/aicode_internal_common.MapResponse'
       message:
         type: string
     type: object
-  aicode_common.BaseResponse-aicode_model_vo_LoginUserVO:
+  aicode_internal_common.BaseResponse-aicode_internal_model_entity_User:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/aicode_model_vo.LoginUserVO'
+        $ref: '#/definitions/aicode_internal_model_entity.User'
       message:
         type: string
     type: object
-  aicode_common.BaseResponse-aicode_model_vo_UserVO:
+  aicode_internal_common.BaseResponse-aicode_internal_model_vo_LoginUserVO:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/aicode_model_vo.UserVO'
+        $ref: '#/definitions/aicode_internal_model_vo.LoginUserVO'
       message:
         type: string
     type: object
-  aicode_common.BaseResponse-bool:
+  aicode_internal_common.BaseResponse-aicode_internal_model_vo_UserVO:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/aicode_internal_model_vo.UserVO'
+      message:
+        type: string
+    type: object
+  aicode_internal_common.BaseResponse-bool:
     properties:
       code:
         type: integer
@@ -35,16 +44,7 @@ definitions:
       message:
         type: string
     type: object
-  aicode_common.BaseResponse-common_MapResponse:
-    properties:
-      code:
-        type: integer
-      data:
-        $ref: '#/definitions/common.MapResponse'
-      message:
-        type: string
-    type: object
-  aicode_common.BaseResponse-int64:
+  aicode_internal_common.BaseResponse-int64:
     properties:
       code:
         type: integer
@@ -53,7 +53,7 @@ definitions:
       message:
         type: string
     type: object
-  aicode_common.BaseResponse-string:
+  aicode_internal_common.BaseResponse-string:
     properties:
       code:
         type: integer
@@ -62,7 +62,16 @@ definitions:
       message:
         type: string
     type: object
-  aicode_model_dto_user.UserAddRequest:
+  aicode_internal_common.DeleteRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  aicode_internal_common.MapResponse:
+    type: object
+  aicode_internal_model_dto_user.UserAddRequest:
     properties:
       userAccount:
         description: 账号
@@ -82,7 +91,7 @@ definitions:
     required:
     - userAccount
     type: object
-  aicode_model_dto_user.UserLoginRequest:
+  aicode_internal_model_dto_user.UserLoginRequest:
     properties:
       userAccount:
         description: 账号
@@ -94,7 +103,7 @@ definitions:
     - userAccount
     - userPassword
     type: object
-  aicode_model_dto_user.UserQueryRequest:
+  aicode_internal_model_dto_user.UserQueryRequest:
     properties:
       id:
         description: id
@@ -124,7 +133,7 @@ definitions:
         description: 用户角色：user/admin/ban
         type: string
     type: object
-  aicode_model_dto_user.UserRegisterRequest:
+  aicode_internal_model_dto_user.UserRegisterRequest:
     properties:
       checkPassword:
         description: 确认密码
@@ -140,7 +149,7 @@ definitions:
     - userAccount
     - userPassword
     type: object
-  aicode_model_dto_user.UserUpdateRequest:
+  aicode_internal_model_dto_user.UserUpdateRequest:
     properties:
       id:
         description: id
@@ -160,7 +169,7 @@ definitions:
     required:
     - id
     type: object
-  aicode_model_entity.User:
+  aicode_internal_model_entity.User:
     properties:
       createTime:
         type: string
@@ -185,7 +194,59 @@ definitions:
       userRole:
         type: string
     type: object
-  aicode_model_vo.LoginUserVO:
+  aicode_internal_model_vo.AIChatMessage:
+    properties:
+      content:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/consts.ChatRole'
+        description: '"user" 或 "assistant"'
+    type: object
+  aicode_internal_model_vo.AIChatRequest:
+    properties:
+      history:
+        items:
+          $ref: '#/definitions/aicode_internal_model_vo.AIChatMessage'
+        type: array
+      model:
+        $ref: '#/definitions/consts.ChatModelType'
+      question:
+        type: string
+    required:
+    - model
+    - question
+    type: object
+  aicode_internal_model_vo.AICodeMessage:
+    properties:
+      content:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/consts.ChatRole'
+        description: '"user" 或 "assistant"'
+    type: object
+  aicode_internal_model_vo.AICodeRequest:
+    properties:
+      appId:
+        type: string
+      genType:
+        $ref: '#/definitions/consts.CodeGenarateType'
+      history:
+        items:
+          $ref: '#/definitions/aicode_internal_model_vo.AICodeMessage'
+        type: array
+      model:
+        $ref: '#/definitions/consts.ChatModelType'
+      question:
+        type: string
+    required:
+    - appId
+    - genType
+    - model
+    - question
+    type: object
+  aicode_internal_model_vo.LoginUserVO:
     properties:
       createTime:
         description: 创建时间
@@ -212,7 +273,7 @@ definitions:
         description: 用户角色：user/admin
         type: string
     type: object
-  aicode_model_vo.UserVO:
+  aicode_internal_model_vo.UserVO:
     properties:
       createTime:
         description: 创建时间
@@ -236,18 +297,121 @@ definitions:
         description: 用户角色：user/admin
         type: string
     type: object
-  common.DeleteRequest:
-    properties:
-      id:
-        type: integer
-    required:
-    - id
-    type: object
-  common.MapResponse:
-    type: object
+  consts.ChatModelType:
+    enum:
+    - deepseek
+    type: string
+    x-enum-varnames:
+    - ChatModelTypeDeepSeek
+  consts.ChatRole:
+    enum:
+    - user
+    - assistant
+    - system
+    type: string
+    x-enum-varnames:
+    - ChatRoleUser
+    - ChatRoleAssistant
+    - ChatRoleSystem
+  consts.CodeGenarateType:
+    enum:
+    - single
+    - multi
+    type: string
+    x-enum-varnames:
+    - CodeGenarateTypeSingle
+    - CodeGenarateTypeMulti
 info:
   contact: {}
 paths:
+  /ai_chat/chat/generate:
+    post:
+      consumes:
+      - application/json
+      description: 聊天接口(非流式)
+      parameters:
+      - description: 聊天请求(非流式)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_internal_model_vo.AIChatRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-string'
+      summary: 聊天接口(非流式)
+      tags:
+      - ai_chat模块
+  /ai_chat/chat/stream:
+    post:
+      consumes:
+      - application/json
+      description: 聊天接口(流式)
+      parameters:
+      - description: 聊天请求(流式)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_internal_model_vo.AIChatRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-string'
+      summary: 聊天接口(流式)
+      tags:
+      - ai_chat模块
+  /ai_code/gen:
+    post:
+      consumes:
+      - application/json
+      description: 代码生成
+      parameters:
+      - description: 代码生成请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_internal_model_vo.AICodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-string'
+      summary: 代码生成
+      tags:
+      - ai_code模块
+  /ai_code/gen/stream:
+    post:
+      consumes:
+      - application/json
+      description: 代码生成流式
+      parameters:
+      - description: 代码生成请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aicode_internal_model_vo.AICodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-string'
+      summary: 代码生成流式
+      tags:
+      - ai_code模块
   /health/:
     get:
       consumes:
@@ -259,7 +423,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-string'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-string'
       summary: 健康检查
       tags:
       - 健康检查
@@ -274,14 +438,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aicode_model_dto_user.UserAddRequest'
+          $ref: '#/definitions/aicode_internal_model_dto_user.UserAddRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-int64'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-int64'
       summary: 创建用户
       tags:
       - 用户模块
@@ -296,14 +460,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/common.DeleteRequest'
+          $ref: '#/definitions/aicode_internal_common.DeleteRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-bool'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-bool'
       summary: 删除用户
       tags:
       - 用户模块
@@ -324,7 +488,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_entity_User'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_entity_User'
       summary: 根据ID获取用户
       tags:
       - 用户模块
@@ -339,7 +503,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_vo_LoginUserVO'
       summary: 获取当前登录用户
       tags:
       - 用户模块
@@ -360,7 +524,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_vo_UserVO'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_vo_UserVO'
       summary: 根据ID获取用户VO
       tags:
       - 用户模块
@@ -375,14 +539,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aicode_model_dto_user.UserQueryRequest'
+          $ref: '#/definitions/aicode_internal_model_dto_user.UserQueryRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-common_MapResponse'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-aicode_internal_common_MapResponse'
       summary: 分页获取用户列表
       tags:
       - 用户模块
@@ -397,14 +561,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aicode_model_dto_user.UserLoginRequest'
+          $ref: '#/definitions/aicode_internal_model_dto_user.UserLoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_vo_LoginUserVO'
       summary: 用户登录
       tags:
       - 用户模块
@@ -419,7 +583,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-bool'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-bool'
       summary: 用户注销
       tags:
       - 用户模块
@@ -434,14 +598,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aicode_model_dto_user.UserRegisterRequest'
+          $ref: '#/definitions/aicode_internal_model_dto_user.UserRegisterRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-int64'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-int64'
       summary: 用户注册
       tags:
       - 用户模块
@@ -456,14 +620,14 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aicode_model_dto_user.UserUpdateRequest'
+          $ref: '#/definitions/aicode_internal_model_dto_user.UserUpdateRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aicode_common.BaseResponse-bool'
+            $ref: '#/definitions/aicode_internal_common.BaseResponse-bool'
       summary: 更新用户
       tags:
       - 用户模块

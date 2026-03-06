@@ -4,6 +4,142 @@
         "contact": {}
     },
     "paths": {
+        "/ai_chat/chat/generate": {
+            "post": {
+                "description": "聊天接口(非流式)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ai_chat模块"
+                ],
+                "summary": "聊天接口(非流式)",
+                "parameters": [
+                    {
+                        "description": "聊天请求(非流式)",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_model_vo.AIChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ai_chat/chat/stream": {
+            "post": {
+                "description": "聊天接口(流式)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ai_chat模块"
+                ],
+                "summary": "聊天接口(流式)",
+                "parameters": [
+                    {
+                        "description": "聊天请求(流式)",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_model_vo.AIChatRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ai_code/gen": {
+            "post": {
+                "description": "代码生成",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ai_code模块"
+                ],
+                "summary": "代码生成",
+                "parameters": [
+                    {
+                        "description": "代码生成请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_model_vo.AICodeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ai_code/gen/stream": {
+            "post": {
+                "description": "代码生成流式",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ai_code模块"
+                ],
+                "summary": "代码生成流式",
+                "parameters": [
+                    {
+                        "description": "代码生成请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_model_vo.AICodeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-string"
+                        }
+                    }
+                }
+            }
+        },
         "/health/": {
             "get": {
                 "description": "检查服务是否正常运行",
@@ -21,7 +157,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-string"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-string"
                         }
                     }
                 }
@@ -47,7 +183,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aicode_model_dto_user.UserAddRequest"
+                            "$ref": "#/definitions/aicode_internal_model_dto_user.UserAddRequest"
                         }
                     }
                 ],
@@ -55,7 +191,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-int64"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-int64"
                         }
                     }
                 }
@@ -81,7 +217,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/common.DeleteRequest"
+                            "$ref": "#/definitions/aicode_internal_common.DeleteRequest"
                         }
                     }
                 ],
@@ -89,7 +225,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-bool"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-bool"
                         }
                     }
                 }
@@ -121,7 +257,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_entity_User"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_entity_User"
                         }
                     }
                 }
@@ -144,7 +280,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_vo_LoginUserVO"
                         }
                     }
                 }
@@ -176,7 +312,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_vo_UserVO"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_vo_UserVO"
                         }
                     }
                 }
@@ -202,7 +338,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aicode_model_dto_user.UserQueryRequest"
+                            "$ref": "#/definitions/aicode_internal_model_dto_user.UserQueryRequest"
                         }
                     }
                 ],
@@ -210,7 +346,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-common_MapResponse"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-aicode_internal_common_MapResponse"
                         }
                     }
                 }
@@ -236,7 +372,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aicode_model_dto_user.UserLoginRequest"
+                            "$ref": "#/definitions/aicode_internal_model_dto_user.UserLoginRequest"
                         }
                     }
                 ],
@@ -244,7 +380,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-aicode_model_vo_LoginUserVO"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-aicode_internal_model_vo_LoginUserVO"
                         }
                     }
                 }
@@ -267,7 +403,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-bool"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-bool"
                         }
                     }
                 }
@@ -293,7 +429,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aicode_model_dto_user.UserRegisterRequest"
+                            "$ref": "#/definitions/aicode_internal_model_dto_user.UserRegisterRequest"
                         }
                     }
                 ],
@@ -301,7 +437,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-int64"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-int64"
                         }
                     }
                 }
@@ -327,7 +463,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aicode_model_dto_user.UserUpdateRequest"
+                            "$ref": "#/definitions/aicode_internal_model_dto_user.UserUpdateRequest"
                         }
                     }
                 ],
@@ -335,7 +471,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aicode_common.BaseResponse-bool"
+                            "$ref": "#/definitions/aicode_internal_common.BaseResponse-bool"
                         }
                     }
                 }
@@ -343,49 +479,63 @@
         }
     },
     "definitions": {
-        "aicode_common.BaseResponse-aicode_model_entity_User": {
+        "aicode_internal_common.BaseResponse-aicode_internal_common_MapResponse": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/aicode_model_entity.User"
+                    "$ref": "#/definitions/aicode_internal_common.MapResponse"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "aicode_common.BaseResponse-aicode_model_vo_LoginUserVO": {
+        "aicode_internal_common.BaseResponse-aicode_internal_model_entity_User": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/aicode_model_vo.LoginUserVO"
+                    "$ref": "#/definitions/aicode_internal_model_entity.User"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "aicode_common.BaseResponse-aicode_model_vo_UserVO": {
+        "aicode_internal_common.BaseResponse-aicode_internal_model_vo_LoginUserVO": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/aicode_model_vo.UserVO"
+                    "$ref": "#/definitions/aicode_internal_model_vo.LoginUserVO"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "aicode_common.BaseResponse-bool": {
+        "aicode_internal_common.BaseResponse-aicode_internal_model_vo_UserVO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/aicode_internal_model_vo.UserVO"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_internal_common.BaseResponse-bool": {
             "type": "object",
             "properties": {
                 "code": {
@@ -399,21 +549,7 @@
                 }
             }
         },
-        "aicode_common.BaseResponse-common_MapResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/common.MapResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "aicode_common.BaseResponse-int64": {
+        "aicode_internal_common.BaseResponse-int64": {
             "type": "object",
             "properties": {
                 "code": {
@@ -427,7 +563,7 @@
                 }
             }
         },
-        "aicode_common.BaseResponse-string": {
+        "aicode_internal_common.BaseResponse-string": {
             "type": "object",
             "properties": {
                 "code": {
@@ -441,7 +577,21 @@
                 }
             }
         },
-        "aicode_model_dto_user.UserAddRequest": {
+        "aicode_internal_common.DeleteRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "aicode_internal_common.MapResponse": {
+            "type": "object"
+        },
+        "aicode_internal_model_dto_user.UserAddRequest": {
             "type": "object",
             "required": [
                 "userAccount"
@@ -469,7 +619,7 @@
                 }
             }
         },
-        "aicode_model_dto_user.UserLoginRequest": {
+        "aicode_internal_model_dto_user.UserLoginRequest": {
             "type": "object",
             "required": [
                 "userAccount",
@@ -486,7 +636,7 @@
                 }
             }
         },
-        "aicode_model_dto_user.UserQueryRequest": {
+        "aicode_internal_model_dto_user.UserQueryRequest": {
             "type": "object",
             "properties": {
                 "id": {
@@ -527,7 +677,7 @@
                 }
             }
         },
-        "aicode_model_dto_user.UserRegisterRequest": {
+        "aicode_internal_model_dto_user.UserRegisterRequest": {
             "type": "object",
             "required": [
                 "checkPassword",
@@ -549,7 +699,7 @@
                 }
             }
         },
-        "aicode_model_dto_user.UserUpdateRequest": {
+        "aicode_internal_model_dto_user.UserUpdateRequest": {
             "type": "object",
             "required": [
                 "id"
@@ -577,7 +727,7 @@
                 }
             }
         },
-        "aicode_model_entity.User": {
+        "aicode_internal_model_entity.User": {
             "type": "object",
             "properties": {
                 "createTime": {
@@ -615,7 +765,89 @@
                 }
             }
         },
-        "aicode_model_vo.LoginUserVO": {
+        "aicode_internal_model_vo.AIChatMessage": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "role": {
+                    "description": "\"user\" 或 \"assistant\"",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/consts.ChatRole"
+                        }
+                    ]
+                }
+            }
+        },
+        "aicode_internal_model_vo.AIChatRequest": {
+            "type": "object",
+            "required": [
+                "model",
+                "question"
+            ],
+            "properties": {
+                "history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/aicode_internal_model_vo.AIChatMessage"
+                    }
+                },
+                "model": {
+                    "$ref": "#/definitions/consts.ChatModelType"
+                },
+                "question": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_internal_model_vo.AICodeMessage": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "role": {
+                    "description": "\"user\" 或 \"assistant\"",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/consts.ChatRole"
+                        }
+                    ]
+                }
+            }
+        },
+        "aicode_internal_model_vo.AICodeRequest": {
+            "type": "object",
+            "required": [
+                "appId",
+                "genType",
+                "model",
+                "question"
+            ],
+            "properties": {
+                "appId": {
+                    "type": "string"
+                },
+                "genType": {
+                    "$ref": "#/definitions/consts.CodeGenarateType"
+                },
+                "history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/aicode_internal_model_vo.AICodeMessage"
+                    }
+                },
+                "model": {
+                    "$ref": "#/definitions/consts.ChatModelType"
+                },
+                "question": {
+                    "type": "string"
+                }
+            }
+        },
+        "aicode_internal_model_vo.LoginUserVO": {
             "type": "object",
             "properties": {
                 "createTime": {
@@ -652,7 +884,7 @@
                 }
             }
         },
-        "aicode_model_vo.UserVO": {
+        "aicode_internal_model_vo.UserVO": {
             "type": "object",
             "properties": {
                 "createTime": {
@@ -685,19 +917,38 @@
                 }
             }
         },
-        "common.DeleteRequest": {
-            "type": "object",
-            "required": [
-                "id"
+        "consts.ChatModelType": {
+            "type": "string",
+            "enum": [
+                "deepseek"
             ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                }
-            }
+            "x-enum-varnames": [
+                "ChatModelTypeDeepSeek"
+            ]
         },
-        "common.MapResponse": {
-            "type": "object"
+        "consts.ChatRole": {
+            "type": "string",
+            "enum": [
+                "user",
+                "assistant",
+                "system"
+            ],
+            "x-enum-varnames": [
+                "ChatRoleUser",
+                "ChatRoleAssistant",
+                "ChatRoleSystem"
+            ]
+        },
+        "consts.CodeGenarateType": {
+            "type": "string",
+            "enum": [
+                "single",
+                "multi"
+            ],
+            "x-enum-varnames": [
+                "CodeGenarateTypeSingle",
+                "CodeGenarateTypeMulti"
+            ]
         }
     }
 }

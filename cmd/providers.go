@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 
+	"aicode/ai/chatmodel"
 	"aicode/config"
 )
 
@@ -16,4 +18,16 @@ func MustProvideConfig() *config.Config {
 func MustProvideDB(cfg *config.Config) *gorm.DB {
 	config.InitDatabase()
 	return config.GetDB()
+}
+
+// ProvideChatModel 提供聊天模型实例
+func MustProvideChatModel(cfg *config.Config) (
+	map[string]chatmodel.ChatModelFactory,
+	error,
+) {
+	chatModelRegistry, err := chatmodel.InitChatModel(cfg)
+	if err != nil {
+		logrus.Panicf("初始化聊天模型失败: %v", err)
+	}
+	return chatModelRegistry, nil
 }

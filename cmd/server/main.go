@@ -17,7 +17,7 @@ func main() {
 	// 启动服务器
 	cfg := config.GetConfig()
 	addr := fmt.Sprintf(":%d", cfg.Server.Port)
-	logrus.Infof("服务器启动在端口: %d, 上下文路径: %s", cfg.Server.Port, cfg.Server.ContextPath)
+	logrus.Infof("服务器启动在端口: %d, 根路径: %s", cfg.Server.Port, cfg.Server.RootPath)
 	if err := app.Router.Run(addr); err != nil {
 		logrus.Panicf("服务器启动失败: %v", err)
 	}

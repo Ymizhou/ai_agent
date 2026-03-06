@@ -7,6 +7,7 @@
 package cmd
 
 import (
+	"aicode/ai/chatmodel"
 	"aicode/internal/controller"
 	"aicode/internal/mapper"
 	"aicode/internal/router"
@@ -19,17 +20,27 @@ import (
 
 // InitializeApp 初始化应用程序（此函数会被wire生成）
 func InitializeApp() (*App, error) {
-	healthController := controller.NewHealthController()
 	config := MustProvideConfig()
+	v, err := MustProvideChatModel(config)
+	if err != nil {
+		return nil, err
+	}
+	healthController := controller.NewHealthController()
 	db := MustProvideDB(config)
 	userMapper := mapper.NewUserMapper(db)
 	userService := impl.NewUserService(userMapper)
 	userController := controller.NewUserController(userService)
-	engine := router.SetupRouter(healthController, userController)
+	aiChatService := impl.NewAIChatService()
+	aiController := controller.NewAIController(aiChatService)
+	aiCodeService := impl.NewAICodeService()
+	aiCodeController := controller.NewAICodeController(aiCodeService)
+	engine := router.SetupRouter(healthController, userController, aiController, aiCodeController)
 	app := &App{
-		Router:           engine,
-		UserController:   userController,
-		HealthController: healthController,
+		ChatModelRegistry: v,
+		Router:            engine,
+		UserController:    userController,
+		HealthController:  healthController,
+		AIController:      aiController,
 	}
 	return app, nil
 }
@@ -38,13 +49,16 @@ func InitializeApp() (*App, error) {
 
 // App 应用程序结构体，包含所有需要的组件
 type App struct {
-	Router           *gin.Engine
-	UserController   *controller.UserController
-	HealthController *controller.HealthController
+	ChatModelRegistry map[string]chatmodel.ChatModelFactory
+	Router            *gin.Engine
+	UserController    *controller.UserController
+	HealthController  *controller.HealthController
+	AIController      *controller.AIController
 }
 
 // wireSet 定义所有的provider集合
 var wireSet = wire.NewSet(
 	MustProvideConfig,
-	MustProvideDB, router.SetupRouter, mapper.NewUserMapper, impl.NewUserService, controller.NewUserController, controller.NewHealthController,
+	MustProvideDB,
+	MustProvideChatModel, router.SetupRouter, mapper.NewUserMapper, impl.NewUserService, controller.NewUserController, controller.NewHealthController, controller.NewAIController, impl.NewAIChatService, controller.NewAICodeController, impl.NewAICodeService,
 )

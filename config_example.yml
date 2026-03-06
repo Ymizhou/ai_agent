@@ -1,0 +1,20 @@
+server:
+  port: 8080
+  context_path: /api/v1
+  log_level: debug
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: 12345678
+  dbname: aicode
+  charset: utf8mb4
+  parseTime: true
+  loc: Local
+
+ai:
+  deepseek:
+    api_key: xxxxxxxxxxxxxxxxxxx
+    model: deepseek-chat
+    base_url: https://api.deepseek.com

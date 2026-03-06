@@ -27,6 +27,25 @@ func NewUserController(userService service.UserService) *UserController {
 	}
 }
 
+// RegisterRoutes 注册路由
+func (ctrl *UserController) RegisterRoutes(r *gin.RouterGroup) {
+	{
+		r.POST("/register", ctrl.UserRegister)
+		r.POST("/login", ctrl.UserLogin)
+		r.GET("/get/login", ctrl.GetLoginUser)
+		r.POST("/logout", ctrl.UserLogout)
+	}
+	{
+		// 管理员接口（后续需要添加权限验证中间件）
+		r.POST("/add", ctrl.AddUser)
+		r.GET("/get", ctrl.GetUserById)
+		r.GET("/get/vo", ctrl.GetUserVOById)
+		r.POST("/delete", ctrl.DeleteUser)
+		r.POST("/update", ctrl.UpdateUser)
+		r.POST("/list/page/vo", ctrl.ListUserVOByPage)
+	}
+}
+
 // UserRegister 用户注册
 // @Summary 用户注册
 // @Description 用户注册接口
@@ -39,17 +58,17 @@ func NewUserController(userService service.UserService) *UserController {
 func (ctrl *UserController) UserRegister(c *gin.Context) {
 	var req user.UserRegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	result, err := ctrl.userService.UserRegister(req.UserAccount, req.UserPassword, req.CheckPassword)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -68,17 +87,17 @@ func (ctrl *UserController) UserRegister(c *gin.Context) {
 func (ctrl *UserController) UserLogin(c *gin.Context) {
 	var req user.UserLoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	loginUserVO, err := ctrl.userService.UserLogin(req.UserAccount, req.UserPassword, c)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -119,7 +138,7 @@ func (ctrl *UserController) UserLogout(c *gin.Context) {
 	result, err := ctrl.userService.UserLogout(c)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
 		c.JSON(http.StatusOK, common.Error(exception.SystemError))
@@ -142,17 +161,17 @@ func (ctrl *UserController) AddUser(c *gin.Context) {
 	// TODO: 添加管理员权限检查中间件
 	var req user.UserAddRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	result, err := ctrl.userService.AddUser(&req)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -173,17 +192,17 @@ func (ctrl *UserController) GetUserById(c *gin.Context) {
 	idStr := c.Query("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil || id <= 0 {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	user, err := ctrl.userService.GetById(id)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -203,17 +222,17 @@ func (ctrl *UserController) GetUserVOById(c *gin.Context) {
 	idStr := c.Query("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil || id <= 0 {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	user, err := ctrl.userService.GetById(id)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -233,17 +252,17 @@ func (ctrl *UserController) DeleteUser(c *gin.Context) {
 	// TODO: 添加管理员权限检查中间件
 	var req common.DeleteRequest
 	if err := c.ShouldBindJSON(&req); err != nil || req.ID <= 0 {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	result, err := ctrl.userService.DeleteById(req.ID)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -263,17 +282,17 @@ func (ctrl *UserController) UpdateUser(c *gin.Context) {
 	// TODO: 添加管理员权限检查中间件
 	var req user.UserUpdateRequest
 	if err := c.ShouldBindJSON(&req); err != nil || req.ID == 0 {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	result, err := ctrl.userService.UpdateById(&req)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -293,17 +312,17 @@ func (ctrl *UserController) ListUserVOByPage(c *gin.Context) {
 	// TODO: 添加管理员权限检查中间件
 	var req user.UserQueryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, common.Error(exception.ParamsError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.ParamsError))
 		return
 	}
 
 	userVOList, total, err := ctrl.userService.ListUserVOByPage(&req)
 	if err != nil {
 		if bizErr, ok := err.(*exception.BusinessError); ok {
-			c.JSON(http.StatusOK, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
+			c.JSON(http.StatusBadRequest, common.ErrorWithCode(bizErr.Code(), bizErr.Message()))
 			return
 		}
-		c.JSON(http.StatusOK, common.Error(exception.SystemError))
+		c.JSON(http.StatusBadRequest, common.Error(exception.SystemError))
 		return
 	}
 
@@ -318,31 +337,13 @@ func (ctrl *UserController) ListUserVOByPage(c *gin.Context) {
 	c.JSON(http.StatusOK, common.Success(pageResponse))
 }
 
-// RegisterRoutes 注册路由
-func (ctrl *UserController) RegisterRoutes(r *gin.RouterGroup) {
-	{
-		r.POST("/register", ctrl.UserRegister)
-		r.POST("/login", ctrl.UserLogin)
-		r.GET("/get/login", ctrl.GetLoginUser)
-		r.POST("/logout", ctrl.UserLogout)
-
-		// 管理员接口（后续需要添加权限验证中间件）
-		r.POST("/add", ctrl.AddUser)
-		r.GET("/get", ctrl.GetUserById)
-		r.GET("/get/vo", ctrl.GetUserVOById)
-		r.POST("/delete", ctrl.DeleteUser)
-		r.POST("/update", ctrl.UpdateUser)
-		r.POST("/list/page/vo", ctrl.ListUserVOByPage)
-	}
-}
-
 // CheckAdminAuth 检查管理员权限的中间件（待实现）
 func CheckAdminAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 从上下文获取登录用户
 		userObj, exists := c.Get(constant.UserLoginState)
 		if !exists {
-			c.JSON(http.StatusOK, common.Error(exception.NotLoginError))
+			c.JSON(http.StatusUnauthorized, common.Error(exception.NotLoginError))
 			c.Abort()
 			return
 		}
