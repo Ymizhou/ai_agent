@@ -36,9 +36,12 @@ func SetupRouter(
 	r := gin.New()
 
 	// 添加全局中间件
-	r.Use(middleware.CORSMiddleware(), // CORS 跨域
-		middleware.FormatLog(),          // 格式化日志
-		middleware.GlobalErrorHandler()) // 全局异常处理
+	r.Use(
+		middleware.CORSMiddleware(),      // CORS 跨域
+		middleware.TraceMiddleware(),     // 注入/生成 traceId
+		middleware.AccessLogMiddleware(), // 请求/响应完整日志
+		middleware.GlobalErrorHandler(),  // 全局异常处理+堆栈打印
+	)
 
 	// 获取配置
 	rootPath := cfg.Server.RootPath

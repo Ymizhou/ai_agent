@@ -7,28 +7,31 @@ import (
 
 	"aicode/internal/common"
 	"aicode/internal/exception"
+	applog "aicode/log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 // GlobalErrorHandler 全局异常处理中间件
+// 捕获 panic 时会附加完整调用堆栈和 traceId 到日志中
 func GlobalErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				// 处理 panic
-				logrus.Errorf("Panic recovered: %v", err)
+				traceId := getTraceId(c)
+				stack := applog.WithStack(err)
 
 				var response common.BaseResponse[any]
 
-				// 判断是否是业务异常
 				if bizErr, ok := err.(*exception.BusinessError); ok {
-					logrus.Errorf("BusinessError: [%d] %s", bizErr.Code(), bizErr.Message())
+					applog.WithTraceId(c.Request.Context(), traceId).
+						WithField("stack", stack).
+						Errorf("panic recovered [BusinessError]: [%d] %s", bizErr.Code(), bizErr.Message())
 					response = common.ErrorWithCode(bizErr.Code(), bizErr.Message())
 				} else {
-					// 其他类型的 panic
-					logrus.Errorf("SystemError: %v", err)
+					applog.WithTraceId(c.Request.Context(), traceId).
+						WithField("stack", stack).
+						Errorf("panic recovered [SystemError]: %v", err)
 					response = common.Error(exception.SystemError)
 				}
 
@@ -49,20 +52,30 @@ func GlobalErrorHandler() gin.HandlerFunc {
 
 // handleError 处理错误并返回响应
 func handleError(c *gin.Context, err error) {
+	traceId := getTraceId(c)
 	var response common.BaseResponse[any]
 
-	// 判断错误类型
 	var bizErr *exception.BusinessError
 	if errors.As(err, &bizErr) {
-		// 业务异常
-		logrus.Errorf("BusinessError: [%d] %s", bizErr.Code(), bizErr.Message())
+		applog.WithTraceId(c.Request.Context(), traceId).
+			Errorf("BusinessError: [%d] %s", bizErr.Code(), bizErr.Message())
 		response = common.ErrorWithCode(bizErr.Code(), bizErr.Message())
 	} else {
-		// 其他错误
-		logrus.Errorf("Error: %v", err)
+		applog.WithTraceId(c.Request.Context(), traceId).
+			Errorf("SystemError: %v", err)
 		response = common.ErrorWithCode(exception.SystemError.Code(), fmt.Sprintf("系统错误: %v", err))
 	}
 
 	c.JSON(http.StatusOK, response)
 	c.Abort()
+}
+
+// getTraceId 从 gin.Context 中安全获取 traceId
+func getTraceId(c *gin.Context) string {
+	val, exists := c.Get(applog.TraceIdKey)
+	if !exists {
+		return ""
+	}
+	traceId, _ := val.(string)
+	return traceId
 }
