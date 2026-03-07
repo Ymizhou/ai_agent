@@ -4,12 +4,21 @@ import (
 	"aicode/config"
 	"aicode/docs"
 	"aicode/internal/controller"
+	"aicode/internal/model/entity"
 	"aicode/internal/router/middleware"
+	"encoding/gob"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+func init() {
+	// 注册 gob 类型，供 session memstore 序列化/反序列化使用
+	gob.Register(&entity.User{})
+}
 
 type HttpRouter struct {
 	healthController *controller.HealthController
@@ -35,12 +44,21 @@ func SetupRouter(
 	// 创建 Gin 引擎
 	r := gin.New()
 
+	// 初始化服务端 session（memstore：session 数据存于服务端内存，客户端只持有 cookie 中的 session ID）
+	sessionSecret := cfg.Server.SessionSecret
+	if sessionSecret == "" {
+		sessionSecret = "default_session_secret"
+	}
+	store := memstore.NewStore([]byte(sessionSecret))
+
 	// 添加全局中间件
 	r.Use(
+		sessions.Sessions("session_id", store),
 		middleware.CORSMiddleware(),      // CORS 跨域
 		middleware.TraceMiddleware(),     // 注入/生成 traceId
 		middleware.AccessLogMiddleware(), // 请求/响应完整日志
 		middleware.GlobalErrorHandler(),  // 全局异常处理+堆栈打印
+		middleware.AuthMiddleware(),      // 登录态校验（白名单接口除外）
 	)
 
 	// 获取配置

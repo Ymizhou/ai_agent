@@ -44,9 +44,10 @@ type SystemPromptDirConfig struct {
 
 // ServerConfig 服务器配置
 type ServerConfig struct {
-	Port     int    `yaml:"port"`
-	RootPath string `yaml:"root_path"`
-	LogLevel string `yaml:"log_level"`
+	Port          int    `yaml:"port"`
+	RootPath      string `yaml:"root_path"`
+	LogLevel      string `yaml:"log_level"`
+	SessionSecret string `yaml:"session_secret"`
 }
 
 // DatabaseConfig 数据库配置

@@ -16,6 +16,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -68,6 +69,7 @@ func (s *UserServiceImpl) UserRegister(userAccount, userPassword, checkPassword 
 		UserPassword: encryptPassword,
 		UserName:     userAccount,
 		UserRole:     enums.USER.Value(),
+		EditTime:     time.Now(),
 	}
 
 	err = s.userMapper.Save(newUser)
@@ -120,13 +122,12 @@ func (s *UserServiceImpl) UserLogin(userAccount, userPassword string, c *gin.Con
 		return nil, exception.NewBusinessErrorWithMessage(exception.SystemError, "查询用户失败")
 	}
 
-	// 4. 记录用户的登录态（使用 session）
-	session := gin.H{
-		constant.UserLoginState: loginUser,
+	// 4. 将用户信息写入服务端 session
+	session := sessions.Default(c)
+	session.Set(constant.UserLoginState, loginUser)
+	if err := session.Save(); err != nil {
+		return nil, exception.NewBusinessErrorWithMessage(exception.SystemError, "保存登录状态失败")
 	}
-	c.Set(constant.UserLoginState, loginUser)
-	// 可以使用 gin-contrib/sessions 来实现真正的 session 管理
-	_ = session
 
 	// 5. 返回脱敏的用户信息
 	return s.GetLoginUserVO(loginUser), nil
@@ -196,8 +197,12 @@ func (s *UserServiceImpl) UserLogout(c *gin.Context) (bool, error) {
 	if !exists {
 		return false, exception.NewBusinessErrorWithMessage(exception.OperationError, "用户未登录")
 	}
-	// 移除登录态
-	c.Set(constant.UserLoginState, nil)
+	// 从服务端 session 中删除登录态
+	session := sessions.Default(c)
+	session.Delete(constant.UserLoginState)
+	if err := session.Save(); err != nil {
+		return false, exception.NewBusinessErrorWithMessage(exception.SystemError, "清除登录状态失败")
+	}
 	return true, nil
 }
 
